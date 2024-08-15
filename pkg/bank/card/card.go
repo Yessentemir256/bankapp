@@ -20,3 +20,27 @@ func Total(cards []types.Card) types.Money {
 	}
 	return sum
 }
+
+// PaymentSources фильтрует карты по балансу и активности, возвращая список источников оплаты.
+func PaymentSources(cards []types.Card) []types.PaymentSource {
+	source := []types.PaymentSource{}
+	for _, card := range cards {
+		if card.Balance <= 0 {
+			continue
+		}
+
+		if !card.Active {
+			continue
+		}
+
+		paymentSourse := types.PaymentSource{
+			Type:    card.Name,
+			Number:  card.PAN,
+			Balance: card.Balance,
+		}
+
+		source = append(source, paymentSourse)
+	}
+	return source
+
+}
